@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+{%block title%}
+  Registeration | MIE
+{%endblock title%}
+
+{% block content %}
+
+
+<div class='container' style='margin-top:70px;min-height:600px;'>
+    <div class='row'>
+      <div class="col-12">
+        <h4 class="mb-3">User Login </h4>
+        <hr style="border-color : #b8bfc2;">
+      </div>
+      {% include "inc/message.html" %}
+    </div>
+    <form method="post" action="">
+      {% csrf_token %}
+     <div class="mb-4">
+       <label>User Name</label>
+       <input type="text" class="form-control" name="username" id="username" placeholder="Enter user name"></input>
+      
+       
+       <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+     </div>
+    
+     <div class="mb-4">
+      
+       <label>Password</label>
+       <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" ></input>
+       
+       
+       
+     </div>
+    
+     <hr style="border-color : #b8bfc2;">
+     
+     <button type="submit" class="btn btn-primary" align="center">Login</button>
+    
+
+   </form>
+</div>
+{% endblock content %}
+    
+
+   

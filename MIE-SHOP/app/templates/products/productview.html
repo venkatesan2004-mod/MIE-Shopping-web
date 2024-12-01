@@ -1,0 +1,177 @@
+{% extends "main.html" %}
+{%block title%}
+   MIE | Online Shoping
+{%endblock title%}
+{% block content %}
+
+<section class="bg-light py-4 my-5" style="min-height:600px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3" style="font-weight:bold;"> {{products | upper}} Details  </h4>
+                <hr style="border-color:#b8bfc2;">
+            </div>
+
+            <div>
+                <a class="text-decoration-none" href={% url 'home' %}>Home</a>/
+                <a class="text-decoration-none" href={% url 'collections' %}>Categories</a>/
+                <a class="text-decoration-none" href={% url 'collections' products.category.name%}>Collections</a>/
+                <a class="text-decoration-none" href="#">{{products}}</a>
+          </div>
+
+
+
+
+
+
+
+            <div class="col-4 my-3 pic-box">
+                {%if products.trending %}
+                <div class="hot">Hot</div>
+                {% endif %}
+                <img src={{products.product_image.url}} height="150px" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-8 my-3">
+                <h5 class="text-success" style="font-weight:bold;">{{products}}</h5>
+                <h6>{{products.vendor}}</h6>
+                <p>{{products.description}}</p>
+                <h6 class="col-2 text-danger"><s>Rs. {{products.org_price}}</s></h6>
+                <h5 class="col-2 text-primary">Rs . <i class="fa fa-rupee"></i> {{products.selling_price}}</h5>
+            </div>
+            <div class="col-3">
+                {% if products.quantity > 0 %}
+                
+                   <input type="hidden" id="pid" value="{{products.id}}" name="product_id">
+                <p>
+                    <div class="input-group" style="width: 150px;">
+                        <button class="input-group-text bg-success text-light" id="btnMinus"><i class="fa fa-minus"></i></button>
+                        <input type="text" id="txtQty" name="qty" value="1" class="form-control text-center">
+                        <button class="input-group-text bg-success text-light" id="btnPlus"><i class="fa fa-plus"></i></button>
+                    </div>
+                    </p>
+                 <button class="btn btn-primary"><i class="fa fa-cart" id="cartBtn"><i class="fa fa-shopping-cart"></i>Add to Cart</i></button>
+               {% else %}
+                 <button class="btn btn-secondary"><i class="fa fa-minus"> out of stack</i></button>
+               {% endif %}
+                 <button class="btn btn-danger" id="hrtBtn"><i class="fa fa-heart"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded",function(event) {
+const btnMinus=document.getElementById('btnMinus');
+const btnPlus=document.getElementById('btnPlus');
+const txtQty=document.getElementById('txtQty');
+const pid=document.getElementById('pid');
+
+const cartBtn=document.getElementById('cartBtn')
+const hrtBtn=document.getElementById('hrtBtn')
+
+
+
+
+
+btnPlus.addEventListener("click",function() {
+   let qty=parseInt(txtQty.value,10);
+   qty=isNaN(qty)?0:qty;
+   console.log(qty);
+   if(qty<10){
+    qty++;
+    txtQty.value=qty;
+   }
+
+});
+btnMinus.addEventListener("click",function() {
+   let qty=parseInt(txtQty.value,10);
+   qty=isNaN(qty)?0:qty;
+   console.log(qty);
+   if(qty>1){
+    qty--;
+    txtQty.value=qty;
+   }
+
+});
+
+cartBtn.addEventListener("click",function() {
+   let qty=parseInt(txtQty.value,10);
+   qty=isNaN(qty)?0:qty;
+   //console.log(qty);
+   if(qty>0){
+    let cart_obg={
+        'product_id':pid.value,
+        'product_qty':qty,
+
+    }
+    fetch('/addtocart',{
+        method:"POST",
+        credentials:"same-origin",
+        headers:{
+            'Accept':'application/json',
+            'X-Requested-with':'XMLHttpRequest',
+            'x-CSRFToken':'{{ csrf_token}}',
+
+        },
+        body:JSON.stringify(cart_obg)
+    }).then(Response=>{
+        return Response.json();
+      
+    })  .then(data=>{
+       // console.log(data);
+       alert(data['status']);
+            
+        })
+    
+    
+   }
+   else{
+    alert("enter quality")
+   }
+
+   
+
+});
+
+
+});
+
+
+hrtBtn.addEventListener("click",function() {
+  
+    let fav_obg={
+        'fav_prd':pid.value,
+
+    }
+    fetch('/addtofav',{
+        method:"POST",
+        credentials:"same-origin",
+        headers:{
+            'Accept':'application/json',
+            'X-Requested-with':'XMLHttpRequest',
+            'x-CSRFToken':'{{ csrf_token}}',
+
+        },
+        body:JSON.stringify(fav_obg)
+    }).then(Response=>{
+        return Response.json();
+      
+    })  .then(data=>{
+       // console.log(data);
+       alert(data['status']);
+            
+        })
+    
+    
+   })
+  
+   
+
+
+
+
+
+    </script>
+{% endblock content %}
+    
+
+   

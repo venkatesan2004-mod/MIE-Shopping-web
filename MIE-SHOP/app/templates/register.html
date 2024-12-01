@@ -1,0 +1,58 @@
+{% extends "main.html" %}
+{%block title%}
+  Registeration | MIE
+{%endblock title%}
+{% block content %}
+
+<div class='container' style='margin-top:70px;min-height:600px;'>
+    <div class='row'>
+      <div class="col-12">
+        <h4 class="mb-3">Register </h4>
+        <hr style="border-color : #b8bfc2;">
+</div>
+{% include "inc/message.html" %}
+    </div>
+    <form method="post" action="">
+       {% csrf_token %}
+      <div class="mb-4">
+        <label>User Name</label>
+        {{forms.username}}
+        {% if forms.errors.username%}
+        <label class="text-danger">{{forms.errors.username}}</label>
+        {% endif%}
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <div class="mb-4">
+        <label>Email</label>
+        {{forms.email}}
+        {% if forms.errors.email%}
+        <label class="text-danger">{{forms.errors.email}}</label>
+        {% endif%}
+      </div>
+      <div class="mb-4">
+       
+        <label>Password</label>
+        {{forms.password1}}
+        {% if forms.errors.password1%}
+        <label class="text-danger">{{forms.errors.password1}}</label>
+        {% endif%}
+      </div>
+      <div class="mb-4">
+       
+        <label>Confirm Password</label>
+        {{forms.password2}}
+        {% if forms.errors.password2%}
+        <label class="text-danger">{{forms.errors.password2}}</label>
+        {% endif%}
+      </div>
+      <hr style="border-color : #b8bfc2;">
+      
+      <button type="submit" class="btn btn-primary" align="center">Register</button>
+      <h6>Already User :<a href={% url 'login'%}>Login</a></h6>
+
+    </form>
+</div>
+{% endblock content %}
+    
+
+   
